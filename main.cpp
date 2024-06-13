@@ -4,7 +4,6 @@
 #include "menu_output.cpp"
 
 int main() {
-    int lowerBound, upperBound;
     int index;
 
     //  Main Menu
@@ -22,29 +21,34 @@ int main() {
         }
 
         switch(index) {
-            case GENERATE_RANDOM:
-                std::cout << "Please insert the lowest number of the range: ";
-                std::cin >> lowerBound;
-                std::cout << "Now insert the highest number of the range: ";
-                std::cin >> upperBound;
+            case GENERATE_RANDOM: {
+                int lowerBound, upperBound;
+                bool success = generator(lowerBound, upperBound);
 
-                if (lowerBound > upperBound) {
+                if (!success) {
                     std::cerr << "Error: The upper limit is lesser than the lower bound." << std::endl;
                     continue;
+                } else {
+                    generated(lowerBound, upperBound);
                 }
 
-                {
-                    std::random_device rd;
-                    std::mt19937 gen(rd());
-                    std::uniform_int_distribution<> dis(lowerBound, upperBound);
+                std::cout << "New number generated." << std::endl;
+                break;
+            }
+            
+            case GENERATE_SEED: {
+                int lowerBound, upperBound;
+                bool success = generator(lowerBound, upperBound);
 
-                    std::cout << "Random number generated: " << dis(gen) << std::endl;
+                if(!success) {
+                    std::cerr << "Error: The upper limit is lesser than the lower bound." << std::endl;
+                    continue;
+                } else {
+                    generateSeed(lowerBound, upperBound);
                 }
+                std::cout << "New number generated." << std::endl;
                 break;
-
-            case GENERATE_SEED:
-                // Implementación futura para generar una semilla
-                break;
+            }
 
             case EXIT_PROGRAM:
                 std::cout << "Exiting the program..." << std::endl;
